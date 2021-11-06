@@ -1,7 +1,7 @@
-from typing import Sized
 from Matriks import Matriks
+from FungsiSVD import SVD
 
-def main():
+def testing():
     #Test Instance
     m1 = Matriks(size=(3,3), fills=1)
     print(m1)
@@ -34,6 +34,27 @@ def main():
     print("Matriks 5\n",m5)
     print("Matriks 4\n",m4)
     print("Penjumlahan Matriks\n",m6)
+
+    #Test reduksi
+    m5 = Matriks(size=(3,4))
+    m5.mat = [[1,2,-2,0], [3,2,-1,1],[2,1,-3,1]]
+    #m5.mat = [[1,2,3,9],[2,-1,1,8], [3,0,-1,3]]
+    m6 = Matriks.reduksi(m5)
+    print("Matriks 5\n",m5)
+    print("Matriks 6\n",m6)
+    
+
+def testing_svd():
+    A = Matriks(size=(2,3))
+    A.mat = [[3,2,0],[-1,1,0]]
+    
+    SVD.find_SVD(A)
+
+    
+
+def main():
+
+    testing_svd()
 
 main()
 
