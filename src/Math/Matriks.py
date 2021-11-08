@@ -31,7 +31,7 @@ class Matriks(Polynom):
         mtxStr += '----------------------------------'
         return mtxStr
     
-    def fill(self, fills):
+    def fill(self, fills = 0):
         
         for i in range(self.rows):
             for j in range(self.cols):
@@ -48,6 +48,26 @@ class Matriks(Polynom):
                     fillPol = Polynom(len=1)
                     fillPol.Pol[0] = fills
                     self.mat[i][j] = fillPol
+
+    def identity(size=(3,3)):
+        m = Matriks(size=size)
+        m.fill(0)
+        for i in range(m.rows):
+            fillPol = Polynom(len=1)
+            fillPol.Pol[0] = 1
+            m.mat[i][i] = fillPol
+        
+        return m
+    
+    def identity_eigen(size=(3,3)):
+        m = Matriks(size=size)
+        m.fill(0)
+        for i in range(m.rows):
+            fillPol = Polynom(len=2)
+            fillPol.Pol[1] = 1
+            m.mat[i][i] = fillPol
+        
+        return m
 
     def copy(self):
         mTemp = Matriks(size=self.size)
@@ -105,18 +125,26 @@ class Matriks(Polynom):
             for j in range(m3.cols):
                 temp = m1.mat[i][j] + m2.mat[i][j]
                 m3.mat[i][j] = temp
-
         return m3
+
+    def sub(m1, m2):
+        return Matriks.add(m1, Matriks.mult(m2, -1))
 
     def mult(m1, m2):
         
-        m3 = Matriks(size=(m1.rows, m2.cols))
-        for i in range(m3.rows):
-            for j in range(m3.cols):
-                fillPol = Polynom()
-                for k in range(m1.cols):
-                    fillPol += (m1.mat[i][k]) * (m2.mat[k][i])
-                m3.mat[i][j] = fillPol
+        if isinstance(m2, Matriks):
+            m3 = Matriks(size=(m1.rows, m2.cols))
+            for i in range(m3.rows):
+                for j in range(m3.cols):
+                    fillPol = Polynom()
+                    for k in range(m1.cols):
+                        fillPol += (m1.mat[i][k]) * (m2.mat[k][i])
+                    m3.mat[i][j] = fillPol
+        else:
+            m3 = Matriks(size=m1.size)
+            for i in range(m3.rows):
+                for j in range(m3.cols):
+                    m3.mat[i][j] = m1.mat[i][j] * m2
 
         return m3
     

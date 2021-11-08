@@ -38,10 +38,10 @@ def testing_matriks():
     m4.fill(2)
     m5 = Matriks(size=(3,3))
     m5.fill([[7,2,3],[2,1,5],[3,7,2]])
-    m6 = Matriks.add(m5, m4)
+    m6 = Matriks.sub(m5, m4)
     print("Matriks 5\n",m5)
     print("Matriks 4\n",m4)
-    print("Penjumlahan Matriks\n",m6)
+    print("Pengurangan Matriks\n",m6)
 
     #Test reduksi
     m5 = Matriks(size=(3,4))
@@ -50,6 +50,14 @@ def testing_matriks():
     m6 = Matriks.reduksi(m5)
     print("Matriks 5\n",m5)
     print("Reduksi Matriks 5\n",m6) 
+
+    #Test Identitas
+    m1 = Matriks.identity()
+    print(m1)
+    m1 = Matriks.identity_eigen()
+    print(m1)
+
+    
 
 def testing_polynom():
     X = Polynom(len=3)
@@ -65,17 +73,22 @@ def testing_polynom():
     print("X * 3: ",X * 3)
 
 def testing_svd():
-    A = Matriks(size=(2,3))
-    A.mat = [[3,2-3,0],[-1,1,0]]
-    B = Matriks(size=(3,2))
-    B.mat = [[3,2-3],[-1j,1],[0,1j]]
+    #Test find svd
+    A = Matriks(size=(3,4))
+    A.fill([[1,2,-2,0], [3,2,-1,1],[2,1,-3,1]])
 
-    C = Matriks.mult(A,B)
-    print("Matriks A\n",A)
-    print("Matriks B\n",B)
-    print("Matriks C\n",C)
-    
-    SVD.find_SVD(A)
+    #Singular Kiri
+    AATranspose = Matriks.mult(A, A.transpose())
+    IdentitasEigen = Matriks.identity_eigen()
+    m = Matriks.sub(AATranspose, IdentitasEigen)
+    print(m)
+
+    #Singular Kanan
+    ATransposeA = Matriks.mult(A.transpose(), A)
+    IdentitasEigen = Matriks.identity_eigen(size=(4,4))
+    m = Matriks.sub(ATransposeA, IdentitasEigen)
+    print(m)
+
 
 """
     CARA MENGGUNAKAN SYSTEM MATRIKS DAN POLYNOM
@@ -105,10 +118,12 @@ def testing_svd():
                 ])
         print(m3)
 
+    Udah instatiate matrix A dan matrix diagonal I:
+    m = Matrix.mult(A, A.transpose()) - Matriks.
 """
 
 
 def main():
-    testing_matriks()
+    testing_svd()
 
 main()
