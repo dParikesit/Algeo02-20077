@@ -1,5 +1,6 @@
 from Matriks import Matriks
 import math
+import numpy as np
 
 class SVD(Matriks):
 
@@ -14,12 +15,17 @@ class SVD(Matriks):
             Notes : mungkin dua alur kerja dibawah bisa dibikin fungsi baru (pipeline baru)
         """
         #-------- Hanya untuk testing ---------
-        A = Matriks(size=(2,3))
-        A.fill([[3,1,1], [-1,3,1]])
+        A = m
         ATrans = A.transpose()
 
+        ATA = Matriks.mult(ATrans, A)
+        eigenMatrix = Matriks.sub(Matriks.identity_eigen(size=(ATA.rows, ATA.cols)), ATA)
+        determinant = eigenMatrix.determinan()
+        eigenValues = np.roots(determinant.Pol)
+
+        print(eigenValues)
+
         #Singular Kiri (Mencari U)
-        eigenValues = [12,10]
         AATranspose = Matriks.mult(A, ATrans)
         U = []
         for eigen in eigenValues:

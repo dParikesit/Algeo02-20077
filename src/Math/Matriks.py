@@ -60,7 +60,7 @@ class Matriks(Polynom):
         
         return m
     
-    def identity_eigen(size=(3,3), fills=Polynom):
+    def identity_eigen(size=(3,3), fills=Polynom()):
         m = Matriks(size=size)
         m.fill(0)
 
