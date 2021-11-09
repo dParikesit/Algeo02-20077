@@ -35,24 +35,34 @@
         <div class="container-fluid mt-5 mb-5">
             <div class="row justify-content-center">
                 <div class="col-lg-4 col-md-6 col-sm-6">
+                    <!-- input your image card -->
                     <div class="card card1-holder">
                         <p class="card-header header-custom">Input Your Image</p>
                         <div class="card-body ms-4 me-4">
                             <input type="file" id="inputFileDefault" hidden="hidden" />    
                             <button type="button" id="chooseFileBtn">Choose file...</button>      
                             <span id="fileText">No File Chosen</span>  
-                            <div class="input-group mt-3">
-                                <span class="input-group-text comp-rate-text" id="basic-addon1">Image Compression Rate: </span>
-                                <input type="text" class="form-control comp-rate-input" placeholder="rate%" aria-label="Username" aria-describedby="basic-addon1">
-                              </div>
+
+                            <div class="row g-3 align-items-center mt-1">
+                                <div class="col-lg-6 col-sm-8">
+                                  <label for="compressRate" class="col-form-label comp-rate-text">Image Compression Rate: </label>
+                                </div>
+                                <div class="col-lg-3 col-md-4 col-sm-4 inputCompressRate">
+                                  <input type="text" id="inputCompressRate" class="form-control" aria-describedby="compressRate">
+                                  <span class="percentBox input-group-text">%</span>
+                                </div>
+                            </div>
                       </div>
+                      <!-- input your image card -->
                 </div>
             </div>
 
-            <!-- card before after image -->
-            <div class="container-fluid mt-5 mb-5">
+            <!-- image before after card -->
+            <div class="container-fluid mt-5 mb-4">
                 <div class="row justify-content-around mt-4">
-                    <div class="col-4">
+
+                    <!-- image before -->
+                    <div class="col-4 custom-popover">
                         <div class="card card-img-holder" id="card_imgBefore">
                             <div class="card-header header-custom">
                               <h2 class="card-title text-center">Before</h2>
@@ -61,15 +71,20 @@
                                 <div class="image">
                                     <img src="" id="imgBefore" alt="">
                                 </div>
-                                <!-- <div class="content">
-                                    <div class=><i class="far fa-images"></i></div>
-                                    <p>No File Chosen</p>
-                                </div> -->
+
                                 <div id="cancelBtn"><i class="fas fa-times"></i></div>
                             </div>
                         </div>
+                        <div class="container popover-body mt-4">
+                            <div class="content ">
+                                <h5>Click image to compress!</h5>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-4">
+                    <!-- image before -->
+
+                    <!-- image after -->
+                    <div class="col-4 custom-popover">
                         <div class="card card-img-holder">
                             <div class="card-header header-custom">
                               <h2 class="card-title text-center">After</h2>
@@ -78,32 +93,85 @@
                                 <div class="image">
                                     <img src="" id="imgAfter" alt="">
                                 </div>
-                                <!-- <div class="content">
-                                    <div class=><i class="far fa-images"></i></div>
-                                    <p>No File Chosen</p>
-                                </div> -->
+
                                 <div id="cancelBtn"><i class="fas fa-times"></i></div>
                             </div>
                         </div>
+                        <div class="container popover-body mt-4">
+                            <div class="content ">
+                                <h5>Click image to download!</h5>
+                            </div>
+                        </div>
                     </div>
+                    <!-- image after -->
                   </div>
                 </div>
             </div>
 
-            <!-- compression result -->
-            <div class="row justify-content-center mt-5 mb-5 ">
+            <!-- compression result card -->
+            <div class="row justify-content-center mb-5 ">
                 <div class="col-lg-4 col-md-6 col-sm-6">
                     <div class="card card1-holder">
                         <p class="card-header header-custom">Compression Result</p>
                         <div class="card-body ms-4 me-4">
                             
+                            <!-- compression result -->
+                            <div class="container" id="comp_result">
+                                <div class="row align-items-center">
+                                    <div class="col-lg-8 col-md-6 col-sm-6">
+                                        <div class="text">
+                                            <p>Image pixel difference percentage: </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="percent-box">
+                                            <p id="compRateResult"></p>
+                                            <p>%</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row align-items-center">
+                                    <div class="col-6 col-md-6">
+                                        <div class="text">
+                                            <p>Image compression time: </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-6 col-sm-6">
+                                        <div class="time-result">
+                                            <p>2.0 </p>
+                                            <p>&nbsp;seconds</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- compression result -->
+                            
+                            <!-- loading compressing -->
+                            <div class="container" id="compressing">
+                                <div class="spinner d-flex justify-content-center mt-3">
+                                    <div class="spinner-grow spin-custom ms-2 me-2" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                    <div class="spinner-grow spin-custom ms-2 me-2" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                    <div class="spinner-grow spin-custom  ms-2 me-2" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                    <div class="spinner-grow spin-custom  ms-2 me-2" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </div>
+                                <div class="text d-flex justify-content-center mt-3 mb-2">
+                                    <h2>...Loading...</h2>
+                                </div>
+                            </div>
+                            <!-- loading compressing -->
                       </div>
                 </div>
             </div>
-            <!-- compression result -->
+            <!-- compression result card -->
         </div>
-
-        
     </section>
     <!-- body content -->
 
@@ -116,15 +184,23 @@
                        Created by:
                     </div>
                 </div>
+                <!-- ig: rava -->
                 <div class="col-2 text-center">
                     <a class="btn btn-primary name" href="https://www.instagram.com/ravaattar/" role="button" target="_blank">Rava</a>
                 </div>
+                <!-- ig: rava -->
+
+                <!-- ig: dimas -->
                 <div class="col-2 text-center">
                     <a class="btn btn-primary name" href="https://www.instagram.com/dimashidqi/" role="button" target="_blank">Dimas</a>
                 </div>
+                <!-- ig: dimas -->
+
+                <!-- ig: rio -->
                 <div class="col-2 text-center" >
                     <a class="btn btn-primary name" href="https://www.instagram.com/rio_audino/" role="button" target="_blank">Rio</a>
                 </div>
+                <!-- ig: rio -->
             </div>
         </div>
     </footer>
@@ -135,6 +211,7 @@
     <!-- Option 1: Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script src="main.js" ></script>
+    <script src="FileSaver.js" ></script>
     <!-- Option 2: Separate Popper and Bootstrap JS -->
     <!--
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
