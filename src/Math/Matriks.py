@@ -171,22 +171,27 @@ class Matriks(Polynom):
                 colLead += 1
                 continue
             
+            
+            print("Start",rowLead,colLead,mTemp)        
             #Jika ada leading value yang nol
-            k = 0
+            k = rowLead
             while (mTemp.mat[rowLead][colLead] == 0 and (k < mTemp.rows)):
-                # Mengecek dari kolom teratas
+                # Mengecek dari baris rowLead
                 if (rowLead!=k):
                     for j in range(mTemp.cols):
                         #swaping rows
                         mTemp.mat[rowLead][j], mTemp.mat[k][j] = mTemp.mat[k][j], mTemp.mat[rowLead][j]
                 k+=1
             
+            
+            print(mTemp)        
             #Merubah leading value menjadi 1
             ratio = mTemp.mat[rowLead][colLead]
             for j in range(colLead, mTemp.cols):
                 mTemp.mat[rowLead][j] /= ratio
             
-
+            
+            print(mTemp)        
             #Mulai Mereduksi
             for j in range(mTemp.rows):
                 if (j != rowLead):
@@ -206,5 +211,5 @@ class Matriks(Polynom):
             for i in range(self.rows):
                 for j in range(self.cols):
                     self.mat[i][j] = self.mat[i][j].Pol[0]
-                    
+
 
