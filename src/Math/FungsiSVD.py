@@ -1,19 +1,50 @@
 from Matriks import Matriks
+import math
 
 class SVD(Matriks):
 
     def find_SVD(m):
-        A = m.copy()
-        ATranspose = A.transpose()
+        """
+            Mencari Bentuk Matriks SVD
+            A = (U . Zigma . Vt)
+            U       : null-space dari singular kiri
+            Zigma   : nilai eigen singular kanan
+            Vt      : null-space dari singular kanan
 
-        print(A)
-        print(ATranspose)
-    
-    def get_leading_index(row):
-        #Mencari Posisi Leading 1
-        r = list(row)
-        if 1 in r:
-            return r.index(1)
+            Notes : mungkin dua alur kerja dibawah bisa dibikin fungsi baru (pipeline baru)
+        """
+        #-------- Hanya untuk testing ---------
+        A = Matriks(size=(2,3))
+        A.fill([[3,1,1], [-1,3,1]])
+        ATrans = A.transpose()
+
+        #Singular Kiri (Mencari U)
+        eigenValues = [12,10]
+        AATranspose = Matriks.mult(A, ATrans)
+        U = []
+        for eigen in eigenValues:
+            IdentitasEigen = Matriks.identity_eigen(fills=eigen)
+            m = Matriks.sub(AATranspose, IdentitasEigen)
+            basis = SVD.null_space(m)
+            U.append(basis)
+            print(f"Eigen Value : {eigen}, basis :\n",basis)
+
+        """
+            Dari file testing masih ada nilai - yang kebalik (mungkin mirip sama problem amar di grup wa)
+        """
+
+        #Singular Kanan (Mencari V)
+        eigenValues = [12,10, 0]
+        ATransposeA = Matriks.mult(ATrans, A)
+        V = []
+        for eigen in eigenValues:
+            IdentitasEigen = Matriks.identity_eigen(fills=eigen)
+            m = Matriks.sub(ATransposeA, IdentitasEigen)
+            basis = SVD.null_space(m)
+            V.append(basis)
+            print(f"Eigen Value : {eigen}, basis :\n",basis)
+
+
 
     def null_space(matrix):
         # Mereduksi Matrix
@@ -21,8 +52,15 @@ class SVD(Matriks):
         A = A.reduksi()
 
         row, col = A.size
+
+        def get_leading_index(row):
+            #Mencari Posisi Leading 1
+            r = list(row)
+            if 1 in r:
+                return r.index(1)
+
         # Mencari posisi-posisi leading 1
-        non_basis = [SVD.get_leading_index(r) for r in A.mat]
+        non_basis = [get_leading_index(r) for r in A.mat]
         non_basis = [p for p in non_basis if p != None] #menghilangkan anggota None
 
         # Mencari posisi-posisi non-leading 1
@@ -50,4 +88,19 @@ class SVD(Matriks):
         # Menginisiasi basis (jumlah kolom x jumlah basis)
         basis = [list([z(i,j) for i in range(col)]) for j in range(len(basis))]
 
+        mBasis = Matriks(size=(len(basis), col))
+        mBasis.mat = basis
+
+        return mBasis
+    
+    def norm_null_space(matrix):
+        #Mencari basis/null space
+        basis = SVD.null_space(matrix)
+
+        for i in range(basis.rows):
+            normRat = math.sqrt(sum(map(lambda x:x*x, basis.mat[i])))
+            basis.mat[i] = [j/normRat for j in basis.mat[i]]
+        
         return basis
+
+    

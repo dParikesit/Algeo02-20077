@@ -9,7 +9,8 @@ class Matriks(Polynom):
         self.mat = [[fills] * self.cols for i in range(self.rows)]
     
     def __str__(self): 
-        rows = len(self.mat)
+        rows = self.rows
+        cols = self.cols
             
         mtxStr = ''
         mtxStr += '------------- output -------------\n'     
@@ -19,7 +20,7 @@ class Matriks(Polynom):
             if isinstance(self.mat[i][0], (int,float)):
                 mtxStr += (', '.join( map(lambda x:'{0:12.3f}'.format(x), self.mat[i])))
             else:
-                for j in range(self.cols):
+                for j in range(cols):
                     if isinstance(self.mat[i][j], Polynom):
                         pol = self.mat[i][j]
                         mtxStr += ' '*5 + Polynom.__str__(pol) + ' '*5
@@ -59,13 +60,22 @@ class Matriks(Polynom):
         
         return m
     
-    def identity_eigen(size=(3,3)):
+    def identity_eigen(size=(3,3), fills=Polynom):
         m = Matriks(size=size)
         m.fill(0)
-        for i in range(m.rows):
-            fillPol = Polynom(len=2)
-            fillPol.Pol[1] = 1
-            m.mat[i][i] = fillPol
+
+        if isinstance(fills, Polynom):
+            # Jika belum memiliki nilai eigen
+            for i in range(m.rows):
+                fillPol = Polynom(len=2)
+                fillPol.Pol[1] = 1
+                m.mat[i][i] = fillPol
+        else:
+            # Jika sudah memiliki nilai eigen
+            for i in range(m.rows):
+                fillPol = Polynom(len=1)
+                fillPol.Pol[0] = fills
+                m.mat[i][i] = fillPol
         
         return m
 
@@ -135,11 +145,13 @@ class Matriks(Polynom):
         if isinstance(m2, Matriks):
             m3 = Matriks(size=(m1.rows, m2.cols))
             for i in range(m3.rows):
+                l = 0
                 for j in range(m3.cols):
                     fillPol = Polynom()
                     for k in range(m1.cols):
-                        fillPol += (m1.mat[i][k]) * (m2.mat[k][i])
+                        fillPol += (m1.mat[i][k]) * (m2.mat[k][l])
                     m3.mat[i][j] = fillPol
+                    l+=1
         else:
             m3 = Matriks(size=m1.size)
             for i in range(m3.rows):
@@ -172,7 +184,8 @@ class Matriks(Polynom):
                 continue
             
             
-            print("Start",rowLead,colLead,mTemp)        
+            #print("Start\n",rowLead,colLead,mTemp)        
+            
             #Jika ada leading value yang nol
             k = rowLead
             while (mTemp.mat[rowLead][colLead] == 0 and (k < mTemp.rows)):
@@ -183,15 +196,13 @@ class Matriks(Polynom):
                         mTemp.mat[rowLead][j], mTemp.mat[k][j] = mTemp.mat[k][j], mTemp.mat[rowLead][j]
                 k+=1
             
-            
-            print(mTemp)        
+                  
             #Merubah leading value menjadi 1
             ratio = mTemp.mat[rowLead][colLead]
             for j in range(colLead, mTemp.cols):
                 mTemp.mat[rowLead][j] /= ratio
             
-            
-            print(mTemp)        
+                 
             #Mulai Mereduksi
             for j in range(mTemp.rows):
                 if (j != rowLead):
@@ -201,8 +212,6 @@ class Matriks(Polynom):
 
             colLead += 1
             rowLead += 1
-            print(mTemp)         
-
         return mTemp
 
     def simplified(self):

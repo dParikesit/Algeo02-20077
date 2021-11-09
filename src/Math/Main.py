@@ -79,9 +79,14 @@ def testing_polynom():
     print("X * 3: ",X * 3)
 
 def testing_svd():
+
     #Test find svd
     A = Matriks(size=(3,4))
     A.fill([[1,2,-2,0], [3,2,-1,1],[2,1,-3,1]])
+    SVD.find_SVD(A)
+
+    return
+
 
     #Singular Kiri
     AATranspose = Matriks.mult(A, A.transpose())
@@ -105,10 +110,12 @@ def testing_svd():
             [3,-1,5,2,2,3]
             ])
     mRed = Matriks.reduksi(m)
-    null_space = SVD.null_space(mRed)
+    nullSpace = SVD.null_space(mRed)
+    normNullSpace = SVD.norm_null_space(mRed)
     print("Matriks 5\n",m)
     print("Reduksi Matriks 5\n",mRed) 
-    print("Null Space:", null_space)
+    print("Null Space:", nullSpace)
+    print("Norm null Space:", normNullSpace)
 
 
 """
