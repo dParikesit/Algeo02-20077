@@ -148,45 +148,63 @@ class Matriks(Polynom):
 
         return m3
     
-    def isAllColsZero(m, col):
+    def isAllColsZero(m, row, col):
         ans = True
-        zeroPol = Polynom()
-
-        for i in range(m.rows):
-            zeroPol.Len = m.mat[i][col].Len
-            zeroPol.fill()
-            if m.mat[i][col] != zeroPol:
+        
+        for i in range(row, m.rows):    
+            if m.mat[i][col] != 0:
                 ans = False
                 break
         
         return ans
 
     def reduksi(m):
+        # Matriks yang diterima adalah yang sudah disimplified
+        m.simplified()
         mTemp = m.copy()
+        colLead = 0
+        rowLead = 0
 
-        for i in range(mTemp.cols):
-            #Jika jumlah kolom melebihi baris
-            if (i > mTemp.rows-1):
-                break
+        while (colLead < mTemp.cols and rowLead < mTemp.rows):
             #Jika ada kolom yang full kosong
-            if (Matriks.isAllColsZero(mTemp,i)):
+            if (Matriks.isAllColsZero(mTemp,rowLead,colLead)):
+                colLead += 1
                 continue
             
-            #Jika ada nilai mat(i,i) yang nol
+            #Jika ada leading value yang nol
             k = 0
-            while (mTemp.mat[i][i] == 0 and (k < mTemp.rows)):
-                if (i!=k):
+            while (mTemp.mat[rowLead][colLead] == 0 and (k < mTemp.rows)):
+                # Mengecek dari kolom teratas
+                if (rowLead!=k):
                     for j in range(mTemp.cols):
                         #swaping rows
-                        mTemp.mat[i][j], mTemp.mat[k][j] = mTemp.mat[k][j], mTemp.mat[i][j]
+                        mTemp.mat[rowLead][j], mTemp.mat[k][j] = mTemp.mat[k][j], mTemp.mat[rowLead][j]
                 k+=1
             
+            #Merubah leading value menjadi 1
+            ratio = mTemp.mat[rowLead][colLead]
+            for j in range(colLead, mTemp.cols):
+                mTemp.mat[rowLead][j] /= ratio
+            
+
             #Mulai Mereduksi
-            for j in range(i+1, mTemp.rows):
-                ratio = mTemp.mat[j][i].Pol[0]/mTemp.mat[i][i].Pol[0]
-                for k in range(mTemp.cols):
-                    mTemp.mat[j][k] -= mTemp.mat[i][k] * ratio
+            for j in range(mTemp.rows):
+                if (j != rowLead):
+                    ratio = mTemp.mat[j][colLead]/mTemp.mat[rowLead][colLead]
+                    for k in range(mTemp.cols):
+                        mTemp.mat[j][k] -= mTemp.mat[rowLead][k] * ratio
+
+            colLead += 1
+            rowLead += 1
+            print(mTemp)         
 
         return mTemp
 
+    def simplified(self):
+        if isinstance(self.mat[0][0], Polynom):
+            # Merubah isi polinom menjadi angka biasa
+            for i in range(self.rows):
+                for j in range(self.cols):
+                    self.mat[i][j] = self.mat[i][j].Pol[0]
+                    
 

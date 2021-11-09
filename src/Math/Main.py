@@ -44,8 +44,14 @@ def testing_matriks():
     print("Pengurangan Matriks\n",m6)
 
     #Test reduksi
-    m5 = Matriks(size=(3,4))
-    m5.fill([[1,2,-2,0], [3,2,-1,1],[2,1,-3,1]])
+    m5 = Matriks(size=(5,6))
+    m5.fill([
+                [2,1,5,1,5,1],
+                [1,1,3,1,6,-1],
+                [-1,1,-1,0,4,-3],
+                [-3,2,-4,-4,-7,0],
+                [3,-1,5,2,2,3]
+            ])
     #m5.mat = [[1,2,3,9],[2,-1,1,8], [3,0,-1,3]]
     m6 = Matriks.reduksi(m5)
     print("Matriks 5\n",m5)
@@ -81,13 +87,29 @@ def testing_svd():
     AATranspose = Matriks.mult(A, A.transpose())
     IdentitasEigen = Matriks.identity_eigen()
     m = Matriks.sub(AATranspose, IdentitasEigen)
-    print(m)
+    print("Singular Kiri", m)
 
     #Singular Kanan
     ATransposeA = Matriks.mult(A.transpose(), A)
     IdentitasEigen = Matriks.identity_eigen(size=(4,4))
     m = Matriks.sub(ATransposeA, IdentitasEigen)
-    print(m)
+    print("Singular Kanan", m)
+
+    #Test Null Space
+    m = Matriks(size=(5,6))
+    m.fill([
+                [2,1,5,1,5,1],
+                [1,1,3,1,6,-1],
+                [-1,1,-1,0,4,-3],
+                [-3,2,-4,-4,-7,0],
+                [3,-1,5,2,2,3]
+            ])
+    #m5.mat = [[1,2,3,9],[2,-1,1,8], [3,0,-1,3]]
+    mRed = Matriks.reduksi(m)
+    null_space = SVD.null_space(mRed)
+    print("Matriks 5\n",m)
+    print("Reduksi Matriks 5\n",mRed) 
+    print("Null Space:", null_space)
 
 
 """
