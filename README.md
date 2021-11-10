@@ -33,5 +33,5 @@ Linux:
 
 ## Contributors
  - [Dimas Shidqi Parikesit](https://github.com/dParikesit)
- - [Rava Nauval Attar](https://github.com/sivaren)
+ - [Rava Naufal Attar](https://github.com/sivaren)
  - [Rio Alexander Audino](https://github.com/Audino723)
