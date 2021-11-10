@@ -2,11 +2,11 @@ from Polynom import Polynom
 
 class Matriks(Polynom):
     #Atribut
-    def __init__(self, size=(1,1), fills = Polynom()):
+    def __init__(self, size=(1,1)):
         self.size = size
         self.rows = size[0]
         self.cols = size[1]
-        self.mat = [[fills] * self.cols for i in range(self.rows)]
+        self.mat = [[0] * self.cols for i in range(self.rows)]
     
     def __str__(self): 
         rows = self.rows
@@ -60,7 +60,7 @@ class Matriks(Polynom):
         
         return m
     
-    def identity_eigen(size=(3,3), fills=Polynom):
+    def identity_eigen(size=(3,3), fills=Polynom()):
         m = Matriks(size=size)
         m.fill(0)
 
@@ -143,15 +143,24 @@ class Matriks(Polynom):
     def mult(m1, m2):
         
         if isinstance(m2, Matriks):
+
             m3 = Matriks(size=(m1.rows, m2.cols))
-            for i in range(m3.rows):
-                l = 0
-                for j in range(m3.cols):
-                    fillPol = Polynom()
-                    for k in range(m1.cols):
-                        fillPol += (m1.mat[i][k]) * (m2.mat[k][l])
-                    m3.mat[i][j] = fillPol
-                    l+=1
+            if isinstance(m1.mat[0][0], Polynom):
+            #Untuk Perkalian Polinom
+                for i in range(m3.rows):
+                    for j in range(m3.cols):
+                        fillPol = Polynom()
+                        for k in range(m1.cols):
+                            fillPol += (m1.mat[i][k]) * (m2.mat[k][j])
+                            #print(fillPol, m1.mat[i][k] , (m2.mat[k][j]))
+                        m3.mat[i][j] = fillPol
+            else:
+                for i in range(m3.rows):
+                    l = 0
+                    for j in range(m3.cols):
+                        for k in range(m1.cols):
+                            m3.mat[i][j] += (m1.mat[i][k]) * (m2.mat[k][l])
+                        l+=1
         else:
             m3 = Matriks(size=m1.size)
             for i in range(m3.rows):

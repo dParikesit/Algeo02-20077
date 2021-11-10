@@ -15,36 +15,78 @@ class SVD(Matriks):
         """
         #-------- Hanya untuk testing ---------
         A = Matriks(size=(2,3))
+        #A.fill([[2,2,0], [-1,1,0]])
         A.fill([[3,1,1], [-1,3,1]])
         ATrans = A.transpose()
+        #print(A)
+        #print(ATrans)
 
         #Singular Kiri (Mencari U)
         eigenValues = [12,10]
         AATranspose = Matriks.mult(A, ATrans)
-        U = []
-        for eigen in eigenValues:
-            IdentitasEigen = Matriks.identity_eigen(fills=eigen)
-            m = Matriks.sub(AATranspose, IdentitasEigen)
-            basis = SVD.null_space(m)
-            U.append(basis)
-            print(f"Eigen Value : {eigen}, basis :\n",basis)
+        U = SVD.find_vectors(eigenValues, matrix = AATranspose)
+        print("Matrix U:\n", U)
+
+        #Singular Kanan (Mencari V)
+        eigenValues = [12,10,0]
+        ATransposeA = Matriks.mult(ATrans, A)
+        V = SVD.find_vectors(eigenValues, matrix = ATransposeA)
+        VTranspose = V.transpose()
+        print("Matrix Vt:\n", VTranspose)
+
+        #Zigma
+        eigenValues = [p for p in eigenValues if p != 0] #Nilai singular tidak nol
+        Zigma = Matriks(size=(A.size))
+        for i in range(len(eigenValues)):
+            Zigma.mat[i][i] = (eigenValues[i]) ** 0.5
+        print("Matrix Zigma:\n", Zigma)
+
+        #Hasil perkalian
+        ANew = SVD.newMatrix(U, Zigma, VTranspose)
+        print("Matrix A:\n", A)
+        print("Matrix A Baru:\n", ANew)
+
+        #Compression
+        ANew = SVD.compression(U, Zigma, VTranspose, 0.5)
+        print("Matrix A:\n", A)
+        print("Matrix A Baru:\n", ANew)
+
 
         """
             Dari file testing masih ada nilai - yang kebalik (mungkin mirip sama problem amar di grup wa)
         """
 
         #Singular Kanan (Mencari V)
-        eigenValues = [12,10, 0]
-        ATransposeA = Matriks.mult(ATrans, A)
-        V = []
-        for eigen in eigenValues:
-            IdentitasEigen = Matriks.identity_eigen(fills=eigen)
-            m = Matriks.sub(ATransposeA, IdentitasEigen)
-            basis = SVD.null_space(m)
-            V.append(basis)
-            print(f"Eigen Value : {eigen}, basis :\n",basis)
+        
 
+    def find_vectors(eigenValues, matrix):
+        #matrix variable contains either A.Atranpose or Atranspose.A
+        
+        #Iniasisi besar ruang vektor
+        lenList = len(eigenValues)
+        vectors = Matriks(size=matrix.size)
+        allBasis = []
 
+        #Mengiterasi setiap nilai eigen
+        for i in range(lenList):
+            #Memanggil fungsi null space
+            IdentitasEigen = Matriks.identity_eigen(fills=eigenValues[i])
+            m = Matriks.sub(matrix, IdentitasEigen)
+            #print(m)
+            basis = SVD.norm_null_space(m)
+
+            #Karena return basis berbentuk list dalam list, harus diaapend manual
+            for temp in basis:
+                allBasis.append(temp)
+            
+            #Debugging
+            #print(f"Eigen Value : {eigenValues[i]}, basis :\n",basis)
+        
+        vectors.mat = allBasis
+
+        #Hasil vector ditranspose agar menjadi ruang vektor
+        vectors = vectors.transpose()
+        return vectors
 
     def null_space(matrix):
         # Mereduksi Matrix
@@ -88,19 +130,51 @@ class SVD(Matriks):
         # Menginisiasi basis (jumlah kolom x jumlah basis)
         basis = [list([z(i,j) for i in range(col)]) for j in range(len(basis))]
 
-        mBasis = Matriks(size=(len(basis), col))
-        mBasis.mat = basis
-
-        return mBasis
+        return basis
     
     def norm_null_space(matrix):
         #Mencari basis/null space
         basis = SVD.null_space(matrix)
 
-        for i in range(basis.rows):
-            normRat = math.sqrt(sum(map(lambda x:x*x, basis.mat[i])))
-            basis.mat[i] = [j/normRat for j in basis.mat[i]]
+        for i in range(len(basis)):
+            normRat = sum(map(lambda x:x*x, basis[i])) ** 0.5
+            basis[i] = [j/normRat for j in basis[i]]
         
         return basis
 
-    
+    def newMatrix(U, Zigma, Vt):
+        #Hasil U.Zigma.Vt
+        ANew = Matriks.mult(U, Zigma)
+        ANew = Matriks.mult(ANew, Vt)
+
+        return ANew
+
+    def compression(U, Zigma, Vt, compRate = 1):
+        totalNodes = Zigma.cols
+        compCols = int(totalNodes * compRate)
+        totalNodes = Zigma.rows
+        compRows = int(totalNodes * compRate)
+
+        # Pemotongan U
+        UNew = Matriks(size=(U.rows, compRows))
+        for j in range(compRows):
+            for i in range(UNew.rows):
+                UNew.mat[i][j] = U.mat[i][j]
+
+        # Pemotongan V
+        VNew = Matriks(size=(compCols, Vt.cols))
+        for i in range(compCols):
+            VNew.mat[i] = Vt.mat[i]
+        
+        # Pemotongan Zigma
+        # Pemotongan V
+        ZigmaNew = Matriks(size=(compRows, compCols))
+        for j in range(compCols):
+            for i in range(compRows):
+                ZigmaNew.mat[i][j] = Zigma.mat[i][j]
+
+        ANew = SVD.newMatrix(UNew, ZigmaNew, VNew)
+
+        return ANew
+
+        

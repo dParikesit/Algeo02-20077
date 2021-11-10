@@ -62,9 +62,7 @@ def testing_matriks():
     print(m1)
     m1 = Matriks.identity_eigen()
     print(m1)
-
-    
-
+   
 def testing_polynom():
     X = Polynom(len=3)
     X.Pol = [1,3,4]
@@ -150,8 +148,8 @@ def testing_svd():
     m = Matrix.mult(A, A.transpose()) - Matriks.
 """
 
-
 def main():
     testing_svd()
+
 
 main()
