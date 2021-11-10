@@ -2,4 +2,4 @@
 
 echo "Running website..."
 source algeo/bin/activate
-uvicorn main:app
+uvicorn main:app --reload

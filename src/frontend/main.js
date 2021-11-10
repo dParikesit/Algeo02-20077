@@ -28,10 +28,30 @@ inputFileDefault.addEventListener("change", function(){
     }
 
     // show up img after on click the img before
-    imgBefore.addEventListener('click', () => {
-      imgAfter.src = imgBefore.src;
+    imgBefore.addEventListener('click', async () => {
       imgWrapper.classList.add("active");
-      
+
+      // Send Image
+      let formData = new FormData();
+      console.log(inputFileDefault)
+      formData.append("file", this.files[0]);
+      formData.append("rate", 80)
+      let response = await fetch('http://127.0.0.1:8000/files/', {
+        method: 'POST',
+        mode: 'same-origin',
+        body: formData
+      })
+      response = await response.json()
+      // SET DISINI TIME NYA, dari variabel response.time
+
+      // Receive image
+      response = await fetch("http://127.0.0.1:8000/files/"+response.fileId+"/"+response.fileExt, {
+        method: "GET",
+        mode: "same-origin",
+      });
+      response = await response.blob();
+      imgAfter.src = URL.createObjectURL(response)
+
       compRateval();  // get comp rate value on click image before
       compResult.classList.add("active"); // show result component
       compressing.classList.add("off"); // off the loading animation
