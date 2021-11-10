@@ -1,13 +1,16 @@
-import numpy as np
 import cv2 as cv
+import numpy as np
+import os
 
 def compress(filePath):
   img = cv.imread(filePath)
-  b,g,r = cv.split(img)
   print(img.shape)
-  print(b)
-  # print(g)
-  # print(r)
+  b,g,r = cv.split(img)
+  
+  #  Process here
+
+  cv.imwrite(os.path.join("files",filePath), cv.merge((b,g,r)))
 
 if __name__=="__main__":
-  compress("Halo")
+  print("Halo")
+  compress('nama.png')

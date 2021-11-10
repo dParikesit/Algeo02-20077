@@ -6,8 +6,11 @@ from fastapi import FastAPI, File, Form, UploadFile
 from fastapi.param_functions import Path
 from fastapi.responses import FileResponse
 from starlette.background import BackgroundTasks
+from Processor.image import compress
 
 app = FastAPI()
+
+print("Welcome to Algeo SVD Image Compressor")
 
 async def chunked_copy(src, dst):
     start = time.perf_counter_ns()
@@ -21,6 +24,7 @@ async def chunked_copy(src, dst):
     stop = time.perf_counter_ns()
     return stop-start
 
+
 @app.post("/files/")
 async def upload_file(
     file: UploadFile = File(...), rate: str = Form(...)
@@ -28,14 +32,14 @@ async def upload_file(
     fileId = secrets.token_urlsafe()
     extension = (os.path.splitext(file.filename)[1])
     filePath = os.path.join("files", fileId+extension)
-    time = await chunked_copy(file,filePath)
+    compress(filePath)
+    time = await chunked_copy(file, filePath)
 
     return{
         "time": time,
-        "fileId": fileId,   
+        "fileId": fileId,
         "fileExt": extension[1:]
     }
-    
 
 
 @app.get("/files/{file_id}")
