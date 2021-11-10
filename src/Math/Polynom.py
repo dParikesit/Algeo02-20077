@@ -1,3 +1,6 @@
+
+DECIMAL_PLACES = 5
+
 class Polynom():
     def __init__(self, len = 0, c='X'):
         self.Pol = [0 for _ in range(len)]
@@ -53,25 +56,7 @@ class Polynom():
 
     def __sub__(self, other):
         other *= -1
-        newPol = Polynom()
-        if isinstance(other, Polynom):
-            maxLen = max(self.Len, other.Len)
-            newPol.Len = maxLen
-            newPol.Pol = [0 for _ in range (maxLen)]
-
-            for i in range(self.Len):
-                newPol.Pol[i] += self.Pol[i]
-            for j in range(other.Len):
-                newPol.Pol[j] += other.Pol[j]
-
-        #Scaler multiplication
-        elif isinstance(other, (int, float)):
-            newPol.Len = self.Len
-            for i in range(self.Len):
-                #Hasil perkalian Polinom
-                newPol.Pol.append(self.Pol[i])
-            newPol.Pol[0] += other
-
+        newPol = self + other
         return newPol
 
     def __mul__(self, other):
@@ -81,11 +66,13 @@ class Polynom():
                 for j in range(other.Len):
                     #Hasil perkalian Polinom
                     temp = self.Pol[i] * other.Pol[j]
+                    temp = temp
                     if (i + j) >= newPol.Len:
                         newPol.Pol.append(temp)
                         newPol.Len += 1
                     else:
                         newPol.Pol[i+j] += temp
+
         #Scaler multiplication
         elif isinstance(other, (int, float)):
             newPol.Len = self.Len
@@ -94,6 +81,12 @@ class Polynom():
                 newPol.Pol.append(self.Pol[i] * other)
 
         return newPol
+
+    def __round__(self, decimal_places = DECIMAL_PLACES):
+        for i in range(self.Len):
+            self.Pol[i] = round(self.Pol[i], decimal_places)
+        
+        return (self)
 
     def fill(self, fills=0):
         self.Pol = [fills for i in range(self.Len)] 

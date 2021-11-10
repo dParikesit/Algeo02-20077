@@ -1,6 +1,14 @@
+import math
+from typing_extensions import Annotated
+
+from numpy.matrixlib.defmatrix import matrix
 from Matriks import Matriks
 from FungsiSVD import SVD
 from Polynom import Polynom
+import random
+
+import numpy as np
+import cv2 as cv
 
 def testing_matriks():
     #Test Instance
@@ -79,9 +87,15 @@ def testing_polynom():
 def testing_svd():
 
     #Test find svd
-    A = Matriks(size=(3,4))
-    A.fill([[1,2,-2,0], [3,2,-1,1],[2,1,-3,1]])
-    SVD.find_SVD(A)
+    A = Matriks()
+    # Isi Ukuran random di sini
+    cols = 6
+    rows = 6
+    A.fill([[random.randint(0,255)/255 for _ in range(cols)] for _ in range(rows)])
+    print(A)
+
+    ANew = SVD.find_SVD(A,compRate=1, decimal_places=1)
+
 
     return
 
@@ -148,8 +162,34 @@ def testing_svd():
     m = Matrix.mult(A, A.transpose()) - Matriks.
 """
 
-def main():
-    testing_svd()
+def compression(matrix):
+    A = Matriks(size=(len(matrix), len(matrix[0])))
+    A.fill(matrix)
+
+    ANew = SVD.find_SVD(A,compRate=1, decimal_places=1, stat=False)
+    ANew.simplified()
+    return ANew.mat
+
+def compress(filePath):
+    #Import Image
+    img = cv.imread(filePath)
+    BGRArray = cv.split(img)
+    print(img.shape)
+
+    #Compressing Image
+    for color in BGRArray:
+        colorMatrix = np.array(color)
+        print(np.shape(colorMatrix))
+        print(type(colorMatrix))
+        colorMatrix = np.ndarray(compression(colorMatrix))
+        
 
 
-main()
+    #Export File
+    img_bgr = cv.merge(BGRArray)
+    cv.imwrite('Testing 1.jpg',img_bgr)
+
+
+testing_svd()
+#compress("C:/Users/rioau/Documents/ITB/2Tingkat 2/Tugas/Algeo/Tubes/2/Algeo02-20077/src/files/test.jpg")
+

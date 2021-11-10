@@ -1,4 +1,8 @@
+from textwrap import fill
+from numpy.lib.arraysetops import isin
 from Polynom import Polynom
+
+DECIMAL_PLACES = 5
 
 class Matriks(Polynom):
     #Atribut
@@ -34,6 +38,13 @@ class Matriks(Polynom):
     
     def fill(self, fills = 0):
         
+        if isinstance(fills, list):
+            self.rows = len(fills)
+            self.cols = len(fills[0])
+            self.size = (self.rows, self.cols)
+        
+        self.mat = [[0] * self.cols for i in range(self.rows)]
+
         for i in range(self.rows):
             for j in range(self.cols):
                 if isinstance(fills, list):
@@ -98,6 +109,7 @@ class Matriks(Polynom):
         return mTrans
 
     def determinan(self):
+        #print("Procces",self.mat[0][0].Pol)
         #Mencari determinan dengan metode kofaktor
         det = Polynom()
         temp = Polynom()
@@ -213,7 +225,7 @@ class Matriks(Polynom):
             
                  
             #Mulai Mereduksi
-            for j in range(mTemp.rows):
+            for j in range(rowLead,mTemp.rows):
                 if (j != rowLead):
                     ratio = mTemp.mat[j][colLead]/mTemp.mat[rowLead][colLead]
                     for k in range(mTemp.cols):
@@ -230,4 +242,7 @@ class Matriks(Polynom):
                 for j in range(self.cols):
                     self.mat[i][j] = self.mat[i][j].Pol[0]
 
-
+    def round(self, decimal_places = DECIMAL_PLACES):
+        for i in range(self.rows):
+            for j in range(self.cols):
+                self.mat[i][j] = round(self.mat[i][j], decimal_places)
