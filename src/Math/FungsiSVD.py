@@ -29,7 +29,7 @@ class SVD(Matriks):
         AATranspose = Matriks.mult(A, ATrans)
         U = []
         for eigen in eigenValues:
-            IdentitasEigen = Matriks.identity_eigen(fills=eigen)
+            IdentitasEigen = Matriks.identity_eigen(size=(AATranspose.rows, AATranspose.cols) , fills=eigen)
             m = Matriks.sub(AATranspose, IdentitasEigen)
             basis = SVD.null_space(m)
             U.append(basis)
@@ -40,11 +40,10 @@ class SVD(Matriks):
         """
 
         #Singular Kanan (Mencari V)
-        eigenValues = [12,10, 0]
         ATransposeA = Matriks.mult(ATrans, A)
         V = []
         for eigen in eigenValues:
-            IdentitasEigen = Matriks.identity_eigen(fills=eigen)
+            IdentitasEigen = Matriks.identity_eigen(size=(ATransposeA.rows, ATransposeA.cols), fills=eigen)
             m = Matriks.sub(ATransposeA, IdentitasEigen)
             basis = SVD.null_space(m)
             V.append(basis)
