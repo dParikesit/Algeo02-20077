@@ -1,6 +1,5 @@
 #! /bin/bash
 
-ECHO "Running website..."
-cd src
+echo "Running website..."
 source algeo/bin/activate
 uvicorn main:app

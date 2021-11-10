@@ -10,25 +10,30 @@
 
 To first setup this project run
 
-Windows:
+Windows (open cmd on this folder):
 ```bash
-  Double-click setup.bat
+  CD.\src
+  python -m venv algeo
+  algeo\Scripts\activate.bat
+  pip install -r requirements-win.txt
+  uvicorn main:app
 ```
 Linux:
 ```bash
   chmod +x setup.sh
-  ./setup.sh
+  ./src/setup.sh
 ```
 
 If you have ran setup and want to start server
-Windows:
+Windows (open cmd on this folder):
 ```bash
-  Double-click run.bat
+  algeo\Scripts\activate.bat
+  uvicorn main:app
 ```
 Linux:
 ```bash
   chmod +x run.sh
-  ./run.sh
+  ./src/run.sh
 ```
 
 ## Contributors
