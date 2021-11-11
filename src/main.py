@@ -8,7 +8,7 @@ from fastapi.param_functions import Path
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.background import BackgroundTasks
-from Processor.image import compress
+from processor.image import compress
 
 app = FastAPI()
 
