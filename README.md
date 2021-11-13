@@ -1,3 +1,12 @@
+# Tugas Besar II IF2123 Aljabar Linier dan Geometri Aplikasi Nilai Eigen dan Vektor Eigen dalam Kompresi Gambar
+> _Program Ini Dibuat Untuk Memenuhi Tugas Perkuliahan Mata Kuliah Aljabar Linier dan Geometri (IF2123)_
+<p align="center">
+Program Studi Teknik Informatika <br/>
+Sekolah Teknik Elektro dan Informatika <br/>
+Institut Teknologi Bandung <br/>
+Semester I Tahun 2021/2022 <br/>
+</p>
+
 # SVD Image Compression Website
 
 ## Tech Stack
