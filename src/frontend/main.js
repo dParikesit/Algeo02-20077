@@ -43,6 +43,8 @@ inputFileDefault.addEventListener("change", function(){
         body: formData
       })
       response = await response.json()
+      // loading animation
+      compressing.classList.add("active");
       // SET DISINI TIME NYA, dari variabel response.time
       let compressTime = 0;
       let timeInterval;
@@ -62,7 +64,7 @@ inputFileDefault.addEventListener("change", function(){
 
       compRateval();  // get comp rate value on click image before
       compResult.classList.add("active"); // show result component
-      compressing.classList.add("off"); // off the loading animation
+      compressing.classList.remove("active"); // remove the loading animation
     });
 
     // delete image before, on click cancel btn

@@ -231,10 +231,10 @@ body{
     border-radius: 10px;
 }
 #compressing{
-    display: block;
-}
-#compressing.off{
     display: none;
+}
+#compressing.active{
+    display: block;
 }
 #compressing .spinner{
     color:#F9E79E;
