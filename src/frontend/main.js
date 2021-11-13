@@ -10,6 +10,7 @@ const cancelBtn = document.getElementById('cancelBtn');
 const compResult = document.getElementById('comp_result');
 const compressing = document.getElementById('compressing');
 const timeCompressFinal = document.getElementById('timeCompress');
+const compRateFinal = document.getElementById('compRateResult');
 
 /* ON CLICK FILE BTN */
 chooseFileBtn.addEventListener("click", function(){
@@ -31,26 +32,25 @@ inputFileDefault.addEventListener("change", function(){
     // show up img after on click the img before
     imgBefore.addEventListener('click', async () => {
       imgWrapper.classList.add("active");
+      compressing.classList.add("active");
 
       // Send Image
+      const inputCompressRate = document.getElementById("inputCompressRate").value;
       let formData = new FormData();
       console.log(inputFileDefault)
       formData.append("file", this.files[0]);
-      formData.append("rate", 80)
+      formData.append("rate", inputCompressRate)
+      console.log({inputCompressRate})
       let response = await fetch('http://127.0.0.1:8000/files/', {
         method: 'POST',
         mode: 'same-origin',
         body: formData
       })
       response = await response.json()
-      // loading animation
-      compressing.classList.add("active");
-      // SET DISINI TIME NYA, dari variabel response.time
-      let compressTime = 0;
-      let timeInterval;
-      timeInterval = setInterval(function() {
-        compressTime += 0.1;
-      }, 100);
+
+      timeCompressFinal.innerHTML = response.time.toFixed(2);
+      compRateFinal.innerHTML = response.rate;
+
       // Receive image
       response = await fetch("http://127.0.0.1:8000/files/"+response.fileId+"/"+response.fileExt, {
         method: "GET",
@@ -58,11 +58,7 @@ inputFileDefault.addEventListener("change", function(){
       });
       response = await response.blob();
       imgAfter.src = URL.createObjectURL(response)
-
-      clearInterval(timeInterval);
-      timeCompressFinal.innerHTML = compressTime;
-
-      compRateval();  // get comp rate value on click image before
+      
       compResult.classList.add("active"); // show result component
       compressing.classList.remove("active"); // remove the loading animation
     });
@@ -103,12 +99,3 @@ function getFileName(str) {
   return str.substring(str.lastIndexOf("/") + 1);
 }
 /* DOWNLOAD IMAGE AFTER */
-
-/* GET COMPRESS RATE VALUE */
-function compRateval(){
-  var compRateVal = document.getElementById("inputCompressRate").value;
-  localStorage.setItem("compRateVal", compRateVal);
-  document.getElementById("compRateResult").innerHTML=localStorage.getItem("compRateVal");
-  return false
-}
-/* GET COMPRESS RATE VALUE */
