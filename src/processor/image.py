@@ -76,8 +76,12 @@ def find_SVD(m, compRate, stat=True, decimal_places=DECIMAL_PLACES, iterations=1
     ANew = ANew @ Vt
     ANew = ANew.round()
     #ANew = ANew.flip()
-    AComp = compression2(U, Zigma, Vt, compRate=compRate)
+    AComp,k  = compression2(U, Zigma, Vt, compRate=compRate)
     AComp = AComp.round()
+
+    # Difference Percentage
+    diff = k*(A.shape[0] + A.shape[1] + 1)/(A.shape[0] + A.shape[1])
+
     if stat:
         print("Matrix U:\n", U)
         print("Matrix Vt:\n", Vt)
@@ -91,7 +95,8 @@ def find_SVD(m, compRate, stat=True, decimal_places=DECIMAL_PLACES, iterations=1
     if(flip==True):
         AComp = AComp.T
         # AComp = np.flipud(AComp)
-    return AComp
+
+    return AComp, diff
 
 
 def compression2(U, Zigma, Vt, compRate=1):
@@ -108,7 +113,9 @@ def compression2(U, Zigma, Vt, compRate=1):
     VNew = Vt[:compCols, :]
     ANew = UNew @ ZigmaNew
     ANew = ANew @ VNew
-    return ANew
+
+    k = np.count_nonzero(ZigmaNew)
+    return ANew,k
 
 # =================================================================
 def accuracy(A, ANew):
@@ -121,9 +128,9 @@ def accuracy(A, ANew):
 def compression(matrix, compRate=1, iterations=1000):
     A = matrix.copy()
     
-    ANew = find_SVD(A,compRate=compRate, decimal_places=1, stat=False, iterations=iterations)
+    ANew, diff = find_SVD(A,compRate=compRate, decimal_places=1, stat=False, iterations=iterations)
     
-    return ANew
+    return ANew, diff
 
 def compress_from_file(filePath, compRates):
     start = time.perf_counter_ns()
@@ -153,7 +160,7 @@ def compress_from_file(filePath, compRates):
                 #minCol = min(colorMatrix.shape)
                 #colorMatrix = colorMatrix[:minCol, :minCol]
                 #color = color[:minCol, :minCol]
-                colorMatrix = compression(colorMatrix, compRate=compRate,iterations=iterations)
+                colorMatrix, diff = compression(colorMatrix, compRate=compRate,iterations=iterations)
                 #print(colorMatrix)
                 BGRNew.append(colorMatrix)
                 #print(f"accuraccy : {accuracy(color,colorMatrix)} %")
