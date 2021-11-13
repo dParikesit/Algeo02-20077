@@ -8,6 +8,8 @@
 
 ## Table of Contents
 * [Tech Stack](#tech-stack)
+* [Deployment](#deployment)
+* [Contributors](#contributors)
 
 ## Tech Stack
 
@@ -46,6 +48,21 @@ Linux:
 ```
 
 ## Contributors
- - [Dimas Shidqi Parikesit](https://github.com/dParikesit)
- - [Rava Naufal Attar](https://github.com/sivaren)
- - [Rio Alexander Audino](https://github.com/Audino723)
+<table>
+    <tr>
+      <td><b>Nama</b></td>
+      <td><b>NIM</b></td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/sivaren"><b>Rava Naufal Attar</b></a></td>
+      <td><b>13520077</b></td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/dParikesit"><b>Dimas Shidqi Parikesit</b></a></td>
+      <td><b>13520087</b></td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/Audino723"><b>Rio Alexander Audino</b></a></td>
+      <td><b>13520088</b></td>
+    </tr>
+</table>
