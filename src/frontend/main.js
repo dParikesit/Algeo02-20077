@@ -42,10 +42,8 @@ inputFileDefault.addEventListener("change", function(){
       // Send Image
       const inputCompressRate = document.getElementById("inputCompressRate").value;
       let formData = new FormData();
-      console.log(inputFileDefault)
       formData.append("file", this.files[0]);
       formData.append("rate", inputCompressRate)
-      console.log({inputCompressRate})
       let response = await fetch('http://127.0.0.1:8000/files/', {
         method: 'POST',
         mode: 'same-origin',
@@ -54,7 +52,7 @@ inputFileDefault.addEventListener("change", function(){
       response = await response.json()
 
       timeCompressFinal.innerHTML = response.time.toFixed(2);
-      compRateFinal.innerHTML = response.rate;
+      compRateFinal.innerHTML = response.rate.toFixed(2);
 
       // Receive image
       response = await fetch("http://127.0.0.1:8000/files/"+response.fileId+"/"+response.fileExt, {

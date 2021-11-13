@@ -141,7 +141,7 @@ def compress_from_file(filePath, compRates):
     #print(fileFormat)
     BGRArray = cv.split(img)
     #print(img.shape)
-    
+    diff = 0
 
     #Compressing Image
     Iterations = [100]
@@ -188,5 +188,5 @@ def compress_from_file(filePath, compRates):
             i += 1
     
     stop = time.perf_counter_ns()
-    return stop-start
+    return stop-start, diff
 

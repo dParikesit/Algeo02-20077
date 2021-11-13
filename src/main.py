@@ -32,11 +32,10 @@ async def upload_file(
     extension = (os.path.splitext(file.filename)[1])
     filePath = os.path.join("files", fileId+extension)
     await chunked_copy(file, filePath)
-    time = compress_from_file(filePath, int(rate)) / 1000000000
-    rateNew = 0
+    time,rateNew = compress_from_file(filePath, int(rate))
 
     return{
-        "time": time,
+        "time": time / 1000000000,
         "rate": rateNew,
         "fileId": fileId,
         "fileExt": extension[1:]
@@ -46,7 +45,6 @@ async def upload_file(
 @app.get("/files/{file_id}/{ext}")
 async def send_file(file_id: str, bgTask: BackgroundTasks, ext: str):
     filePath = os.path.join("files", file_id+"."+str(ext))
-    print(os.path.isfile(filePath))
 
     bgTask.add_task(os.remove, filePath)
     return FileResponse(filePath, background=bgTask)
