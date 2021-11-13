@@ -7,21 +7,36 @@
 > Semester I Tahun 2021/2022 <br/>_
 
 ## Table of Contents
+* [General Information](#general-information)
 * [Tech Stack](#tech-stack)
+* [Prerequisites](#prerequisites)
 * [Deployment](#deployment)
+* [Project Status](#project-status)
 * [Contributors](#contributors)
 
+## General Information
+- Program kompresi gambar dengan memanfaatkan algoritma SVD (_Singular Value Decomposition_) dalam bentuk website lokal sederhana
+- Website dapat menerima file gambar beserta _input_ tingkat kompresi gambar
+- Website dapat menampilkan gambar _input_, _output_, _runtime_ algoritma, dan persentase hasil kompresi gambar (perubahan jumlah pixel gambar)
+- File _output_ hasil kompresi dapat diunduh melalui website
+
+
 ## Tech Stack
+- **Client:** HTML, CSS, Vanilla Javascript <br/>
+- **Server:** FastAPI, OpenCV
 
-**Client:** HTML, CSS, Vanilla Javascript
+## Prerequisites
+> **Pastikan branch repository berada di `master`** </br>
 
-**Server:** FastAPI, openCV
+**Clone repository ini menggunakan command berikut (git bash)**
+```
+$ git clone https://github.com/dParikesit/Algeo02-20077.git
+```
 
 ## Deployment
+> **To first setup this project run**
 
-To first setup this project run
-
-Windows (open cmd on this folder):
+Windows (open `cmd` on this folder)
 ```bash
   CD.\src
   python -m venv algeo
@@ -29,23 +44,29 @@ Windows (open cmd on this folder):
   pip install -r requirements-win.txt
   uvicorn main:app
 ```
-Linux:
+
+Linux
 ```bash
   chmod +x setup.sh
   ./src/setup.sh
 ```
 
-If you have ran setup and want to start server
-Windows (open cmd on this folder):
+> **If you have ran setup and want to start server** 
+
+Windows (open `cmd` on this folder)
 ```bash
   algeo\Scripts\activate.bat
   uvicorn main:app
 ```
-Linux:
+
+Linux
 ```bash
   chmod +x run.sh
   ./src/run.sh
 ```
+
+## Project Status
+> **Project is: _complete_**
 
 ## Contributors
 <table>
