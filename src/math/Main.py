@@ -1,7 +1,3 @@
-import math
-from typing_extensions import Annotated
-
-from numpy.matrixlib.defmatrix import matrix
 from Matriks import Matriks
 from FungsiSVD import SVD
 from Polynom import Polynom
@@ -89,46 +85,15 @@ def testing_svd():
     #Test find svd
     A = Matriks()
     # Isi Ukuran random di sini
-    cols = 6
-    rows = 6
+    cols = 9
+    rows = cols
     A.fill([[random.randint(0,255)/255 for _ in range(cols)] for _ in range(rows)])
-    print(A)
+    #print(A)
 
     ANew = SVD.find_SVD(A,compRate=1, decimal_places=1)
 
 
     return
-
-
-    #Singular Kiri
-    AATranspose = Matriks.mult(A, A.transpose())
-    IdentitasEigen = Matriks.identity_eigen()
-    m = Matriks.sub(AATranspose, IdentitasEigen)
-    print("Singular Kiri", m)
-
-    #Singular Kanan
-    ATransposeA = Matriks.mult(A.transpose(), A)
-    IdentitasEigen = Matriks.identity_eigen(size=(4,4))
-    m = Matriks.sub(ATransposeA, IdentitasEigen)
-    print("Singular Kanan", m)
-
-    #Test Null Space
-    m = Matriks(size=(5,6))
-    m.fill([
-            [2,1,5,1,5,1],
-            [1,1,3,1,6,-1],
-            [-1,1,-1,0,4,-3],
-            [-3,2,-4,-4,-7,0],
-            [3,-1,5,2,2,3]
-            ])
-    mRed = Matriks.reduksi(m)
-    nullSpace = SVD.null_space(mRed)
-    normNullSpace = SVD.norm_null_space(mRed)
-    print("Matriks 5\n",m)
-    print("Reduksi Matriks 5\n",mRed) 
-    print("Null Space:", nullSpace)
-    print("Norm null Space:", normNullSpace)
-
 
 """
     CARA MENGGUNAKAN SYSTEM MATRIKS DAN POLYNOM
@@ -191,5 +156,5 @@ def compress(filePath):
 
 
 testing_svd()
-#compress("C:/Users/rioau/Documents/ITB/2Tingkat 2/Tugas/Algeo/Tubes/2/Algeo02-20077/src/files/test.jpg")
+#compress("C:/Users/rioau/Documents/ITB/2Tingkat 2/Tugas/Algeo/Tubes/2/Algeo02-20077/test/Testing 1.jpg")
 

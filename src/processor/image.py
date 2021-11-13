@@ -1,6 +1,6 @@
-import cv2 as cv
-import sys
 import numpy as np
+
+from src.Math.Matriks import Matriks
 
 
 def simultaneous_power_iteration(A, k):
@@ -34,13 +34,17 @@ def compress(filePath):
   # img_bgr = cv.merge(BGRArray)
   # cv.imwrite('Test2.jpg',img_bgr)
 
-  A = np.matrix([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
-  rows, cols = A.shape
+  A = Matriks(size=(2,3))
+  A.mat = np.array([[3,1,1],[-1,3,1]])
+  At = A.transpose()
+  ATA = Matriks.mult(A, At)
+  
+  rows, cols = ATA.shape
   mode = False
   if rows < cols:
     mode = True  # True jika return U, False return V
 
-  eigen, arr = simultaneous_power_iteration(A, min(A.shape))
+  eigen, arr = simultaneous_power_iteration(ATA, min(ATA.shape))
   print("Eigen")
   print(eigen)
 
