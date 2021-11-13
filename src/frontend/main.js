@@ -12,6 +12,8 @@ const compressing = document.getElementById('compressing');
 const timeCompressFinal = document.getElementById('timeCompress');
 const compRateFinal = document.getElementById('compRateResult');
 
+let imgBeforeName = "";
+
 /* ON CLICK FILE BTN */
 chooseFileBtn.addEventListener("click", function(){
   inputFileDefault.click();
@@ -21,6 +23,8 @@ chooseFileBtn.addEventListener("click", function(){
 /* VALUE FILE INPUT CHANGED */
 inputFileDefault.addEventListener("change", function(){  
   const file = this.files[0];
+  imgBeforeName = file.name;
+  
   if(file){
     const reader = new FileReader();
     reader.onload = function(){
@@ -31,6 +35,7 @@ inputFileDefault.addEventListener("change", function(){
 
     // show up img after on click the img before
     imgBefore.addEventListener('click', async () => {
+      compResult.classList.remove("active");
       imgWrapper.classList.add("active");
       compressing.classList.add("active");
 
@@ -88,7 +93,7 @@ inputFileDefault.addEventListener("change", function(){
 /* DOWNLOAD IMAGE AFTER */
 imgAfter.addEventListener('click', () => {
   let imgPath = imgAfter.getAttribute("src");
-  let fileName = getFileName(imgPath);
+  let fileName = imgBeforeName;
 
   if(imgPath != ""){
     saveAs(imgPath, fileName);
