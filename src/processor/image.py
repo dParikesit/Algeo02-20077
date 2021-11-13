@@ -144,7 +144,7 @@ def compress_from_file(filePath, compRates):
     diff = 0
 
     #Compressing Image
-    Iterations = [100]
+    Iterations = [10]
     compRates = [compRates/100]
     QUALITY_JPG = 85
     QUALITY_PNG = 9

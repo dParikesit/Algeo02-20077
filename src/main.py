@@ -32,7 +32,7 @@ async def upload_file(
     extension = (os.path.splitext(file.filename)[1])
     filePath = os.path.join("files", fileId+extension)
     await chunked_copy(file, filePath)
-    time,rateNew = compress_from_file(filePath, int(rate))
+    time,rateNew = compress_from_file(filePath, float(rate))
 
     return{
         "time": time / 1000000000,
