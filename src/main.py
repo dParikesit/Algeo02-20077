@@ -8,7 +8,7 @@ from fastapi.param_functions import Path
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.background import BackgroundTasks
-from processor.image import compress
+from Processor.Main import compress_from_file
 
 app = FastAPI()
 
@@ -36,7 +36,7 @@ async def upload_file(
     extension = (os.path.splitext(file.filename)[1])
     filePath = os.path.join("files", fileId+extension)
     time = await chunked_copy(file, filePath)
-    compress(filePath)
+    compress_from_file(filePath)
     
     return{
         "time": time,

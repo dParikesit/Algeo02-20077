@@ -12,7 +12,7 @@ class SVD(Matriks):
         Q, _ = np.linalg.qr(Q)
         Q_prev = Q
         for i in range(iterations):
-            if i%50 == 0: print("--------------",i)
+            #if i%50 == 0: print("--------------",i)
             Z = A.dot(Q)
             Q, R = np.linalg.qr(Z)
             # can use other stopping criteria as well
@@ -102,16 +102,6 @@ class SVD(Matriks):
 
         # Pemotongan V
         VNew = Vt[:compCols,:]
-
-        
-        print("KOmpresi=========================")
-        print(U.shape)
-        print(UNew.shape)
-        print(Zigma.shape)
-        print(ZigmaNew.shape)
-        print(Vt.shape)
-        print(VNew.shape)
-        
 
         ANew = UNew @ ZigmaNew
         ANew = ANew @ VNew
