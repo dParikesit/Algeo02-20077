@@ -9,6 +9,7 @@ const cancelBtn = document.getElementById('cancelBtn');
 
 const compResult = document.getElementById('comp_result');
 const compressing = document.getElementById('compressing');
+const timeCompressFinal = document.getElementById('timeCompress');
 
 /* ON CLICK FILE BTN */
 chooseFileBtn.addEventListener("click", function(){
@@ -43,7 +44,11 @@ inputFileDefault.addEventListener("change", function(){
       })
       response = await response.json()
       // SET DISINI TIME NYA, dari variabel response.time
-
+      let compressTime = 0;
+      let timeInterval;
+      timeInterval = setInterval(function() {
+        compressTime += 0.1;
+      }, 100);
       // Receive image
       response = await fetch("http://127.0.0.1:8000/files/"+response.fileId+"/"+response.fileExt, {
         method: "GET",
@@ -51,6 +56,9 @@ inputFileDefault.addEventListener("change", function(){
       });
       response = await response.blob();
       imgAfter.src = URL.createObjectURL(response)
+
+      clearInterval(timeInterval);
+      timeCompressFinal.innerHTML = compressTime;
 
       compRateval();  // get comp rate value on click image before
       compResult.classList.add("active"); // show result component
