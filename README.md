@@ -8,9 +8,11 @@
 
 ## Table of Contents
 * [General Information](#general-information)
+* [Web Design](#web-design)
 * [Tech Stack](#tech-stack)
 * [Prerequisites](#prerequisites)
 * [Deployment](#deployment)
+* [Screenshot](#screenshot)
 * [Project Status](#project-status)
 * [Contributors](#contributors)
 
@@ -20,6 +22,8 @@
 - Website dapat menampilkan gambar _input_, _output_, _runtime_ algoritma, dan persentase hasil kompresi gambar (perubahan jumlah pixel gambar)
 - File _output_ hasil kompresi dapat diunduh melalui website
 
+## Web Design
+> You can see it [_here_](https://www.figma.com/file/jsMp4hkcpi8EAUo395qvNu/Algeo02-20077?node-id=6%3A54).
 
 ## Tech Stack
 - **Client:** HTML, CSS, Vanilla Javascript <br/>
@@ -64,6 +68,9 @@ Linux
   chmod +x run.sh
   ./src/run.sh
 ```
+
+## Screenshot
+> ![test 0 1](https://user-images.githubusercontent.com/88304340/141690259-d4e9511a-0a4f-4a05-9173-1d112d34dd08.png)
 
 ## Project Status
 > **Project is: _complete_**
