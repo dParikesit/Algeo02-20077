@@ -1,13 +1,10 @@
-# from fungsiSVD import find_SVD
-
 import numpy as np
 import cv2 as cv
 import os
 import time
+
 # =================================================================
-
 DECIMAL_PLACES = 5
-
 
 def simultaneous_power_iteration(A, k, iterations=1000):
     A = np.array(A)
@@ -16,19 +13,15 @@ def simultaneous_power_iteration(A, k, iterations=1000):
     Q, _ = np.linalg.qr(Q)
     Q_prev = Q
     for i in range(iterations):
-        #if i%50 == 0: print("--------------",i)
         Z = A.dot(Q)
         Q, R = np.linalg.qr(Z)
-        # can use other stopping criteria as well
+
+        # Stop criteria
         err = ((Q - Q_prev) ** 2).sum()
         Q_prev = Q
         if err < 1e-10:
             break
-    #R = np.ndarray.tolist(np.diag(R))
-    #R = [p for p in R if round(p, DECIMAL_PLACES) != 0]
-    #Q = np.ndarray.tolist(Q)
-    #R = np.diag(R)
-    #R = np.append(A, np.zeros(size), axis=1)
+
     return np.diag(R), Q
 
 
@@ -39,44 +32,28 @@ def find_SVD(m, compRate, stat=True, decimal_places=DECIMAL_PLACES, iterations=1
         flip = True
     A = m.copy()
     ATrans = A.transpose()
-    #print(A.shape)
-    #print(ATrans)
-    #Singular Kanan (Mencari V)
     ATransposeA = ATrans @ A
     eigenValues, V = simultaneous_power_iteration(
         ATransposeA, min(ATransposeA.shape), iterations=iterations)
     Vt = V.transpose()
     Vt = np.dot(Vt, -1)
-    #print(Vt)
-    #Zigma
-    #print("Singular val : ",len(eigenValues))
     eigenValues = np.ndarray.tolist(eigenValues)
-    #eigenValues = [p for p in eigenValues if round(p) != 0] #Nilai singular tidak nol
     Zigma = np.zeros(A.shape)
-    #print(Zigma.shape)
     for i in range(min(min(Zigma.shape), len(eigenValues))):
         if (eigenValues[i] > 0):
             Zigma[i][i] = (np.sqrt(((eigenValues[i]))))
         else:
-            temp = -1  # ----------> Inget Ganti
+            temp = -1
             Zigma[i][i] = (temp) * (np.sqrt(abs((eigenValues[i]))))
-        #print((eigenValues[i]))
-    #print(Zigma)
-    # print("Singular val : ",i)
-    #Mencari U dari V
-    # print(A.shape[0])
     U = np.zeros(shape=(A.shape[0], A.shape[0]))
     for i in range(A.shape[0]):
         U[i] = A @ Vt[i] / Zigma[i][i]
     Ut = U.T
     U = Ut
-    # print(U)
-    #Hasil perkalian
     ANew = U @ Zigma
     ANew = ANew @ Vt
     ANew = ANew.round()
-    #ANew = ANew.flip()
-    AComp,k  = compression2(U, Zigma, Vt, compRate=compRate)
+    AComp,k  = createResult(U, Zigma, Vt, compRate=compRate)
     AComp = AComp.round()
 
     # Difference Percentage
@@ -94,23 +71,23 @@ def find_SVD(m, compRate, stat=True, decimal_places=DECIMAL_PLACES, iterations=1
 
     if(flip==True):
         AComp = AComp.T
-        # AComp = np.flipud(AComp)
 
     return AComp, diff
 
 
-def compression2(U, Zigma, Vt, compRate=1):
+def createResult(U, Zigma, Vt, compRate=1):
     totalNodes = Zigma.shape[1]
     compCols = max(1, int(totalNodes * compRate))
     totalNodes = Zigma.shape[0]
     compRows = max(1, int(totalNodes * compRate))
+
     # Pemotongan U
     UNew = U[:, :compRows]
-
     # Pemotongan Zigma
     ZigmaNew = Zigma[:compRows, :compCols]
     # Pemotongan V
     VNew = Vt[:compCols, :]
+
     ANew = UNew @ ZigmaNew
     ANew = ANew @ VNew
 
@@ -121,9 +98,6 @@ def compression2(U, Zigma, Vt, compRate=1):
 def accuracy(A, ANew):
     accuracy = np.sum(A) - np.sum(ANew)
     return (1 - accuracy/(A.shape[1] * A.shape[0])) * 100
-
-
-#def split_matrix(matrix):
 
 def compression(matrix, compRate=1, iterations=1000):
     A = matrix.copy()
@@ -138,9 +112,7 @@ def compress_from_file(filePath, compRates):
     #Import Image
     img = cv.imread(filePath)
     fileFormat = filePath.split(".")[-1]
-    #print(fileFormat)
     BGRArray = cv.split(img)
-    #print(img.shape)
     diff = 0
 
     #Compressing Image
@@ -151,23 +123,15 @@ def compress_from_file(filePath, compRates):
     for iterations in Iterations:
         i = 1
         for compRate in compRates:
-            #print(f"Iterasi {iterations} compRate {compRate}")
             BGRNew = []
             for color in BGRArray:
                 colorMatrix = np.array(color)
                 colorMatrix = colorMatrix.astype(float)
-                #print(colorMatrix)
-                #minCol = min(colorMatrix.shape)
-                #colorMatrix = colorMatrix[:minCol, :minCol]
-                #color = color[:minCol, :minCol]
                 colorMatrix, diff = compression(colorMatrix, compRate=compRate,iterations=iterations)
-                #print(colorMatrix)
                 BGRNew.append(colorMatrix)
-                #print(f"accuraccy : {accuracy(color,colorMatrix)} %")
 
             #Export File
             img_bgr = cv.merge(BGRNew)
-            #print(type(BGRNew))
 
             if (fileFormat == "png"):
                 quality = QUALITY_PNG
